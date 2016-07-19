@@ -49,3 +49,4 @@ Temporary Items
 # Project specific ignores
 WindowsFormsApplication1/bin/
 WindowsFormsApplication1/obj/
+.vs/
