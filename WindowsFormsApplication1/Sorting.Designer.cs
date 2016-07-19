@@ -83,6 +83,7 @@
             this.inputBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.inputBox.Size = new System.Drawing.Size(641, 194);
             this.inputBox.TabIndex = 3;
+            this.inputBox.TextChanged += new System.EventHandler(this.inputBox_TextChanged);
             // 
             // randomInputButton
             // 

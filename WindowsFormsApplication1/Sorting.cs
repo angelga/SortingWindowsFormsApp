@@ -10,7 +10,6 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApplication1
 {
-
     public partial class Sorting : Form
     {
         enum param { name = 0, input_list = 1 };
@@ -26,10 +25,10 @@ namespace WindowsFormsApplication1
             bw.DoWork += new DoWorkEventHandler(bw_DoWork);
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
 
-            this.inputBox.Text = this.randomList(DEFAULT_COUNT.ToString());
+            this.randomInputList();
         }
 
-        private string randomList(string count)
+        private void randomInputList()
         {
             var output = "";
             Random rand = new Random();
@@ -46,14 +45,12 @@ namespace WindowsFormsApplication1
                 }
             }
 
-            return output;
+            this.inputBox.Text = output;
         }
 
         private void randomInputButton_Click(object sender, EventArgs e)
         {
-            var output = this.randomList(this.countInput.Text);
-
-            this.inputBox.Text = output;
+            this.randomInputList();
         }
 
         private void countInput_TextChanged(object sender, EventArgs e)
@@ -68,14 +65,21 @@ namespace WindowsFormsApplication1
             if (this.countInput.Text.Length >= 3)
             {
                 this.append_logging("InputCount: Only up to 99 allowed");
+                this.countInput.Text = DEFAULT_COUNT.ToString();
             }
         }
 
         private void append_logging(string msg)
         {
-            this.loggingBox.Text = this.loggingBox.Text.Insert(0, 
-                DateTime.Now.ToLongTimeString() + ": " + msg + Environment.NewLine);
-            //this.loggingBox.Text += msg + Environment.NewLine;
+            if (this.loggingBox.InvokeRequired)
+            {
+                this.loggingBox.Invoke(new updateDelegate(append_logging), msg);
+            }
+            else
+            {
+                this.loggingBox.Text = this.loggingBox.Text.Insert(0, 
+                    DateTime.Now.ToLongTimeString() + ": " + msg + Environment.NewLine);
+            }
         }
 
         private void changeElementsReadOnly(bool enable)
@@ -109,11 +113,27 @@ namespace WindowsFormsApplication1
 
         }
 
+        delegate void updateDelegate(string val);
+
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
             object[] parameters = e.Argument as object[];
 
+            for (int i = 0; i < 6; i++)
+            {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    break;
+                }
+                else
+                {
+                    System.Threading.Thread.Sleep(5 * 1000);
+                }
+            }
+
+            this.append_logging("Message from bw.");
             e.Result = parameters[(int)param.input_list];
         }
 
@@ -123,12 +143,12 @@ namespace WindowsFormsApplication1
             {
                 this.append_logging("Worker: thread was cancelled.");
             }
-            if (e.Error != null)
+            else if (e.Error != null)
             {
                 this.append_logging("Worker: error in worker thread");
                 this.append_logging(e.Error.ToString());
             }
-            if (e.Result != null)
+            else
             {
                 this.append_logging("Worker: thread exited successfully.");
                 this.outputBox.Text= e.Result.ToString();
@@ -153,5 +173,45 @@ namespace WindowsFormsApplication1
                 this.append_logging("Cancel: worker does not suppor cancellation.");
             }
         }
+
+        private bool validate_inputBox(OptionalOut<List<int>> inputList = null)
+        {
+            List<string> numbers = this.inputBox.Text.Split(',').ToList();
+            List<int> nums = new List<int>();
+            for (int i = 0; i < numbers.Count; i++)
+            {
+                if (i+1 == numbers.Count && String.IsNullOrWhiteSpace(numbers[i]))
+                {
+                    continue;
+                }
+                int conversion;
+                var success = Int32.TryParse(numbers[i].Trim(), out conversion);
+                if (!success)
+                {
+                    return false;
+                }
+                nums.Add(conversion);
+            }
+
+            if (inputList != null)
+            {
+                inputList.Result = nums;
+            }
+            return true;
+        }
+
+        private void inputBox_TextChanged(object sender, EventArgs e)
+        {
+            if (!this.validate_inputBox())
+            {
+                this.append_logging("Invalid input provided, reverting.");
+                this.randomInputList();
+            }
+        }
+    }
+
+    public class OptionalOut<Type>
+    {
+        public Type Result { get; set; }
     }
 }
