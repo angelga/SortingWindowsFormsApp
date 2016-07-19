@@ -41,6 +41,7 @@
             this.statusTextBox = new System.Windows.Forms.TextBox();
             this.serverLabel = new System.Windows.Forms.Label();
             this.serverAddress_textBox = new System.Windows.Forms.TextBox();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxAlgorithms
@@ -88,7 +89,7 @@
             this.randomInputButton.Location = new System.Drawing.Point(469, 13);
             this.randomInputButton.Name = "randomInputButton";
             this.randomInputButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.randomInputButton.Size = new System.Drawing.Size(361, 49);
+            this.randomInputButton.Size = new System.Drawing.Size(216, 49);
             this.randomInputButton.TabIndex = 4;
             this.randomInputButton.Text = "Random input";
             this.randomInputButton.UseVisualStyleBackColor = true;
@@ -99,10 +100,10 @@
             this.outputBox.Location = new System.Drawing.Point(189, 319);
             this.outputBox.Multiline = true;
             this.outputBox.Name = "outputBox";
+            this.outputBox.ReadOnly = true;
             this.outputBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.outputBox.Size = new System.Drawing.Size(641, 194);
             this.outputBox.TabIndex = 5;
-            this.outputBox.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // inputLabel
             // 
@@ -167,12 +168,23 @@
             this.serverAddress_textBox.Size = new System.Drawing.Size(576, 26);
             this.serverAddress_textBox.TabIndex = 12;
             // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(691, 13);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(138, 49);
+            this.cancelButton.TabIndex = 13;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelInputButton_Click);
+            // 
             // Sorting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(857, 715);
+            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.serverAddress_textBox);
             this.Controls.Add(this.serverLabel);
             this.Controls.Add(this.statusTextBox);
@@ -188,7 +200,7 @@
             this.Controls.Add(this.listBoxAlgorithms);
             this.Name = "Sorting";
             this.Text = "Sorting Algorithms";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.Sorting_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -209,6 +221,7 @@
         private System.Windows.Forms.TextBox statusTextBox;
         private System.Windows.Forms.Label serverLabel;
         private System.Windows.Forms.TextBox serverAddress_textBox;
+        private System.Windows.Forms.Button cancelButton;
     }
 }
 

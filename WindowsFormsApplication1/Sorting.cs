@@ -13,35 +13,26 @@ namespace WindowsFormsApplication1
 
     public partial class Sorting : Form
     {
-        enum algorithm
-        {
-            None,
-            BubbleSort
-        };
-
         private const int DEFAULT_COUNT = 11;
-        private algorithm selectedAlgorithm = algorithm.None;
+        private BackgroundWorker bw;
 
         public Sorting()
         {
             InitializeComponent();
+
+            bw = new BackgroundWorker();
+            bw.WorkerSupportsCancellation = true;
+            bw.DoWork += new DoWorkEventHandler(bw_DoWork);
+            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+
+            this.inputBox.Text = this.randomList(DEFAULT_COUNT.ToString());
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void randomInputButton_Click(object sender, EventArgs e)
+        private string randomList(string count)
         {
             var output = "";
             Random rand = new Random();
-            for (int i=0; i < Int16.Parse(this.countInput.Text); i++)
+            for (int i = 0; i < Int16.Parse(this.countInput.Text); i++)
             {
                 var r = rand.Next(0, 1000);
                 if (output.Length == 0)
@@ -53,6 +44,13 @@ namespace WindowsFormsApplication1
                     output += ", " + r.ToString();
                 }
             }
+
+            return output;
+        }
+
+        private void randomInputButton_Click(object sender, EventArgs e)
+        {
+            var output = this.randomList(this.countInput.Text);
 
             this.inputBox.Text = output;
         }
@@ -79,13 +77,42 @@ namespace WindowsFormsApplication1
 
         private void listBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (selectedAlgorithm == algorithm.None)
+            if (this.bw.IsBusy)
             {
-                var alg = this.listBoxAlgorithms.SelectedItem.ToString();
+                this.append_logging("Error: Should not be ble to select algorithm list while sorting is taking place.");
+            }
+            else
+            {
+                this.listBoxAlgorithms.Enabled = false;
+                this.randomInputButton.Enabled = false;
+                this.inputBox.Enabled = false;
+                this.countInput.Enabled = false;
+            }
 
-               
-                this.append_logging("ListBox: " + alg + " selected.");
+            var alg = this.listBoxAlgorithms.SelectedItem.ToString();               
+            this.append_logging("ListBox: " + alg + " selected.");
+        }
 
+        private void Sorting_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+        private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
+
+        private void cancelInputButton_Click(object sender, EventArgs e)
+        {
+            if (bw.WorkerSupportsCancellation)
+            {
+                bw.CancelAsync();
             }
         }
     }
