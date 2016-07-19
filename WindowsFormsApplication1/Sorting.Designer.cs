@@ -97,6 +97,7 @@
             // 
             // outputBox
             // 
+            this.outputBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.outputBox.Location = new System.Drawing.Point(189, 319);
             this.outputBox.Multiline = true;
             this.outputBox.Name = "outputBox";
@@ -125,6 +126,7 @@
             // 
             // loggingBox
             // 
+            this.loggingBox.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.loggingBox.Location = new System.Drawing.Point(13, 551);
             this.loggingBox.Multiline = true;
             this.loggingBox.Name = "loggingBox";
