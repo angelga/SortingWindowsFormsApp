@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace Sorting
 {
     partial class Sorting
     {
@@ -39,8 +39,6 @@
             this.loggingBox = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.Label();
             this.statusTextBox = new System.Windows.Forms.TextBox();
-            this.serverLabel = new System.Windows.Forms.Label();
-            this.serverAddress_textBox = new System.Windows.Forms.TextBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -49,7 +47,10 @@
             this.listBoxAlgorithms.FormattingEnabled = true;
             this.listBoxAlgorithms.ItemHeight = 20;
             this.listBoxAlgorithms.Items.AddRange(new object[] {
-            "BubbleSort"});
+            "SelectionSort",
+            "BubbleSort",
+            "InsertionSort",
+            "MergeSort"});
             this.listBoxAlgorithms.Location = new System.Drawing.Point(12, 12);
             this.listBoxAlgorithms.Name = "listBoxAlgorithms";
             this.listBoxAlgorithms.Size = new System.Drawing.Size(171, 524);
@@ -155,22 +156,6 @@
             this.statusTextBox.Text = "Ready!";
             this.statusTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // serverLabel
-            // 
-            this.serverLabel.AutoSize = true;
-            this.serverLabel.Location = new System.Drawing.Point(189, 520);
-            this.serverLabel.Name = "serverLabel";
-            this.serverLabel.Size = new System.Drawing.Size(59, 20);
-            this.serverLabel.TabIndex = 11;
-            this.serverLabel.Text = "Server:";
-            // 
-            // serverAddress_textBox
-            // 
-            this.serverAddress_textBox.Location = new System.Drawing.Point(254, 519);
-            this.serverAddress_textBox.Name = "serverAddress_textBox";
-            this.serverAddress_textBox.Size = new System.Drawing.Size(576, 26);
-            this.serverAddress_textBox.TabIndex = 12;
-            // 
             // cancelButton
             // 
             this.cancelButton.Location = new System.Drawing.Point(691, 13);
@@ -188,8 +173,6 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(857, 715);
             this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.serverAddress_textBox);
-            this.Controls.Add(this.serverLabel);
             this.Controls.Add(this.statusTextBox);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.loggingBox);
@@ -222,8 +205,6 @@
         private System.Windows.Forms.TextBox loggingBox;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.TextBox statusTextBox;
-        private System.Windows.Forms.Label serverLabel;
-        private System.Windows.Forms.TextBox serverAddress_textBox;
         private System.Windows.Forms.Button cancelButton;
     }
 }

@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms.cs" />
+    <Compile Include="OptionalParameter.cs" />
     <Compile Include="Sorting.cs">
       <SubType>Form</SubType>
     </Compile>
