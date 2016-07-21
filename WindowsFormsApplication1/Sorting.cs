@@ -145,7 +145,7 @@ namespace Sorting
         {
             BackgroundWorker worker = sender as BackgroundWorker;
             object[] parameters = e.Argument as object[];
-            MethodInfo method = typeof(Algorithms).GetMethod((string)parameters[(int)WorkerParam.name]);
+            MethodInfo method = typeof(Algorithms).GetMethod((string)parameters[(int)WorkerParam.name], new Type[] { typeof(System.String) });
             /*
             for (int i = 0; i < 3; i++)
             {

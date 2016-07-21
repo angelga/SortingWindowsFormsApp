@@ -50,7 +50,9 @@
             "SelectionSort",
             "BubbleSort",
             "InsertionSort",
-            "MergeSort"});
+            "MergeSort",
+            "LomutoQuickSort",
+            "HoareQuickSort"});
             this.listBoxAlgorithms.Location = new System.Drawing.Point(12, 12);
             this.listBoxAlgorithms.Name = "listBoxAlgorithms";
             this.listBoxAlgorithms.Size = new System.Drawing.Size(171, 524);

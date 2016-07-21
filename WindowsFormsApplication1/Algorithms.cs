@@ -97,5 +97,147 @@ namespace Sorting
 
             return result;
         }
+
+        public static List<int> MergeSort(string input)
+        {
+            return MergeSort(parse(input));
+        }
+
+        public static List<int> MergeSort(List<int> input)
+        {
+            if (input.Count <= 1)
+            {
+                return input;
+            }
+
+            var middle = input.Count / 2;
+
+            var left = MergeSort(input.GetRange(0, middle));
+            var right = MergeSort(input.GetRange(middle, (input.Count - middle)));
+
+            return Merge(left, right);
+        }
+
+        public static List<int> Merge(List<int> left, List<int> right)
+        {
+            var result = new List<int>();
+
+            int i = 0;
+            int k = 0;
+
+            while (i < left.Count && k < right.Count)
+            {
+                if (left[i] < right[k])
+                {
+                    result.Add(left[i++]);
+                }
+                else
+                {
+                    result.Add(right[k++]);
+                }
+            }
+
+            while (i < left.Count)
+            {
+                result.Add(left[i++]);
+            }
+            while (k < right.Count)
+            {
+                result.Add(right[k++]);
+            }
+
+            return result;
+        }
+
+        public static List<int> LomutoQuickSort(string input)
+        {
+            var items = parse(input);
+            LomutoQuickSort(items, start: 0, end: items.Count - 1);
+            return items;
+        }
+
+        public static void LomutoQuickSort(List<int> input, int start, int end)
+        {
+            if (start < end)
+            {
+                var p = lomutoPartition(input, start, end);
+                LomutoQuickSort(input, start, p - 1);
+                LomutoQuickSort(input, p + 1, end);
+            }
+        }
+
+        public static int lomutoPartition(List<int> input, int start, int end)
+        {
+            var pivot = input[end];
+            var indexPivot = start;
+            var i = start;
+            int temp; 
+
+            while (i < end)
+            {
+                if (input[i] <= pivot)
+                {
+                    temp = input[indexPivot];
+                    input[indexPivot] = input[i];
+                    input[i] = temp;
+                    indexPivot++;
+                }
+                i++;
+            }
+
+            temp = input[indexPivot];
+            input[indexPivot] = input[end];
+            input[end] = temp;
+
+            return indexPivot;
+        }
+
+        public static List<int> HoareQuickSort(string input)
+        {
+            var items = parse(input);
+            HoareQuickSort(items, 0, items.Count-1);
+            return items;
+        }
+
+        public static void HoareQuickSort(List<int> input, int start, int end)
+        {
+            if (start < end)
+            {
+                var p = hoarePartition(input, start, end);
+                HoareQuickSort(input, start, p);
+                HoareQuickSort(input, p + 1, end);
+            }
+        }
+
+        public static int hoarePartition(List<int> input, int start, int end)
+        {
+            var pivot = input[start];
+            var i = start - 1;
+            var k = end + 1;
+
+            while (true)
+            {
+                i++;
+                while (input[i] < pivot)
+                {
+                    i++;
+                }
+
+                k--;
+                while (input[k] > pivot)
+                {
+                    k--;
+                }
+
+                if (i >= k)
+                {
+                    return k;
+                }
+
+                var temp = input[i];
+                input[i] = input[k];
+                input[k] = temp;
+            }
+        }
     }
 }
