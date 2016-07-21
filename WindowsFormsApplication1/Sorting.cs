@@ -25,7 +25,6 @@ namespace Sorting
             InitializeComponent();
 
             bw = new BackgroundWorker();
-            bw.WorkerSupportsCancellation = true;
             bw.DoWork += new DoWorkEventHandler(bw_DoWork);
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
 
@@ -42,11 +41,9 @@ namespace Sorting
                     this.outputBox.Text = "";
                     this.listBoxAlgorithms.ClearSelected();
                     this.statusTextBox.Text = "Done.";
-                    this.cancelButton.Enabled = false;
                     break;
                 case AppState.Idle:
                     this.randomInputButton.Enabled = true;
-                    this.cancelButton.Enabled = true;
                     this.listBoxAlgorithms.Enabled = true;
                     this.randomInputButton.Enabled = true;
                     this.inputBox.Enabled = true;
@@ -146,26 +143,8 @@ namespace Sorting
             BackgroundWorker worker = sender as BackgroundWorker;
             object[] parameters = e.Argument as object[];
             MethodInfo method = typeof(Algorithms).GetMethod((string)parameters[(int)WorkerParam.name], new Type[] { typeof(System.String) });
-            /*
-            for (int i = 0; i < 3; i++)
-            {
-                if (worker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    break;
-                }
-                else
-                {
-                    System.Threading.Thread.Sleep(5 * 1000);
-                }
-            }
-            */
-
+            
             e.Result = method.Invoke(null, new object[] { parameters[(int)WorkerParam.input_list] });
-            if (worker.CancellationPending)
-            {
-                e.Cancel = true;
-            }
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -203,23 +182,6 @@ namespace Sorting
             }
 
             this.UpdateAppState(AppState.Idle);
-        }
-
-        private void cancelInputButton_Click(object sender, EventArgs e)
-        {
-            if (!bw.IsBusy)
-            {
-                this.append_logging("Cancel: nothing is running.");
-            }
-            else if (bw.WorkerSupportsCancellation)
-            {
-                bw.CancelAsync();
-                this.append_logging("Cancel: called CancelAsync.");
-            }
-            else
-            {
-                this.append_logging("Cancel: worker does not support cancellation.");
-            }
         }
 
         private bool validate_inputBox(OptionalOut<List<int>> inputList = null)

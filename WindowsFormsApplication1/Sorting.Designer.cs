@@ -39,7 +39,6 @@
             this.loggingBox = new System.Windows.Forms.TextBox();
             this.statusLabel = new System.Windows.Forms.Label();
             this.statusTextBox = new System.Windows.Forms.TextBox();
-            this.cancelButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxAlgorithms
@@ -61,7 +60,7 @@
             // 
             // countInput
             // 
-            this.countInput.Location = new System.Drawing.Point(243, 24);
+            this.countInput.Location = new System.Drawing.Point(454, 25);
             this.countInput.Name = "countInput";
             this.countInput.Size = new System.Drawing.Size(55, 26);
             this.countInput.TabIndex = 1;
@@ -72,7 +71,7 @@
             // countLabel
             // 
             this.countLabel.AutoSize = true;
-            this.countLabel.Location = new System.Drawing.Point(185, 27);
+            this.countLabel.Location = new System.Drawing.Point(395, 28);
             this.countLabel.Name = "countLabel";
             this.countLabel.Size = new System.Drawing.Size(56, 20);
             this.countLabel.TabIndex = 2;
@@ -90,7 +89,7 @@
             // 
             // randomInputButton
             // 
-            this.randomInputButton.Location = new System.Drawing.Point(469, 13);
+            this.randomInputButton.Location = new System.Drawing.Point(563, 14);
             this.randomInputButton.Name = "randomInputButton";
             this.randomInputButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.randomInputButton.Size = new System.Drawing.Size(216, 49);
@@ -142,7 +141,7 @@
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(304, 27);
+            this.statusLabel.Location = new System.Drawing.Point(218, 28);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(60, 20);
             this.statusLabel.TabIndex = 9;
@@ -150,7 +149,7 @@
             // 
             // statusTextBox
             // 
-            this.statusTextBox.Location = new System.Drawing.Point(370, 24);
+            this.statusTextBox.Location = new System.Drawing.Point(284, 25);
             this.statusTextBox.Name = "statusTextBox";
             this.statusTextBox.ReadOnly = true;
             this.statusTextBox.Size = new System.Drawing.Size(85, 26);
@@ -158,23 +157,12 @@
             this.statusTextBox.Text = "Ready!";
             this.statusTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // cancelButton
-            // 
-            this.cancelButton.Location = new System.Drawing.Point(691, 13);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(138, 49);
-            this.cancelButton.TabIndex = 13;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelInputButton_Click);
-            // 
             // Sorting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(857, 715);
-            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.statusTextBox);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.loggingBox);
@@ -207,7 +195,6 @@
         private System.Windows.Forms.TextBox loggingBox;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.TextBox statusTextBox;
-        private System.Windows.Forms.Button cancelButton;
     }
 }
 
