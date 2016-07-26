@@ -26,7 +26,7 @@ namespace Sorting
             return numbers;
         }
 
-        public static List<int> BubbleSort(string input)
+        public static void BubbleSort(string input, out string output)
         {
             List<int> result = parse(input);
             
@@ -50,10 +50,10 @@ namespace Sorting
                 }
             }
 
-            return result;
+            output = String.Join(",", result);
         }
 
-        public static List<int> SelectionSort(string input)
+        public static void SelectionSort(string input, out string output)
         {
             List<int> result = parse(input);
 
@@ -73,10 +73,10 @@ namespace Sorting
                 result[smallest_index] = temp;
             }
 
-            return result;
+            output = String.Join(",", result);
         }
 
-        public static List<int> InsertionSort(string input)
+        public static void InsertionSort(string input, out string output)
         {
             List<int> result = parse(input);
 
@@ -95,12 +95,12 @@ namespace Sorting
                 result[i + 1] = last;
             }
 
-            return result;
+            output = String.Join(",", result);
         }
 
-        public static List<int> MergeSort(string input)
+        public static void MergeSort(string input, out string output)
         {
-            return MergeSort(parse(input));
+            output = String.Join(",", MergeSort(parse(input)));
         }
 
         public static List<int> MergeSort(List<int> input)
@@ -149,11 +149,11 @@ namespace Sorting
             return result;
         }
 
-        public static List<int> LomutoQuickSort(string input)
+        public static void LomutoQuickSort(string input, out string output)
         {
             var items = parse(input);
             LomutoQuickSort(items, start: 0, end: items.Count - 1);
-            return items;
+            output = String.Join(",", items);
         }
 
         public static void LomutoQuickSort(List<int> input, int start, int end)
@@ -192,11 +192,11 @@ namespace Sorting
             return indexPivot;
         }
 
-        public static List<int> HoareQuickSort(string input)
+        public static void HoareQuickSort(string input, out string output)
         {
             var items = parse(input);
             HoareQuickSort(items, 0, items.Count-1);
-            return items;
+            output = String.Join(",", items);
         }
 
         public static void HoareQuickSort(List<int> input, int start, int end)

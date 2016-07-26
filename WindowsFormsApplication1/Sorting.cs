@@ -19,6 +19,7 @@ namespace Sorting
         private const int DEFAULT_COUNT = 11;
         private BackgroundWorker bw;
         private Stopwatch sw;
+        private string result;
 
         public Sorting()
         {
@@ -141,10 +142,16 @@ namespace Sorting
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-            object[] parameters = e.Argument as object[];
-            MethodInfo method = typeof(Algorithms).GetMethod((string)parameters[(int)WorkerParam.name], new Type[] { typeof(System.String) });
-            
-            e.Result = method.Invoke(null, new object[] { parameters[(int)WorkerParam.input_list] });
+            object[] backgroundWorkerParameters = e.Argument as object[];
+
+            string methodName = (string)backgroundWorkerParameters[(int)WorkerParam.name];
+            var inputType = new Type[] { typeof(System.String), typeof(string).MakeByRefType() };
+            MethodInfo method = typeof(Algorithms).GetMethod(methodName, inputType);
+
+            object[] algorithmParameters = new object[] { backgroundWorkerParameters[(int)WorkerParam.input_list], null };
+            method.Invoke(null, algorithmParameters);
+            this.result = (string)algorithmParameters[1];
+            e.Result = "Success.";
         }
 
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -161,24 +168,14 @@ namespace Sorting
             else
             {
                 sw.Stop();
-                this.append_logging("Sorting: completed.");
+                var output = (string)e.Result;
+                this.append_logging("Sorting: completed: " + output);
                 this.append_logging("Sorting: total time " + sw.Elapsed.TotalMilliseconds + " ms");
-                var result = (List<int>)e.Result;
-                this.outputBox.Text = String.Join(",",result);
-                this.append_logging("Done marshalling data to UI thread.");
 
-                var compare = new List<int>(result);
-                compare.Sort();
-                var equal = result.SequenceEqual(compare);
-                if (equal)
-                {
-                    this.append_logging("Sorting: sorting correct.");
-                }
-                else
-                {
-                    this.append_logging("Sorting: sorting failed.");
-                    this.statusTextBox.Text = "Failure.";
-                }                
+                this.outputBox.SuspendLayout();
+                this.outputBox.Text = this.result;
+                this.outputBox.ResumeLayout();
+                this.append_logging("Done marshalling data to UI thread.");
             }
 
             this.UpdateAppState(AppState.Idle);

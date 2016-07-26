@@ -93,7 +93,7 @@
             this.randomInputButton.Name = "randomInputButton";
             this.randomInputButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.randomInputButton.Size = new System.Drawing.Size(216, 49);
-            this.randomInputButton.TabIndex = 4;
+            this.randomInputButton.TabIndex = 2;
             this.randomInputButton.Text = "Random input";
             this.randomInputButton.UseVisualStyleBackColor = true;
             this.randomInputButton.Click += new System.EventHandler(this.randomInputButton_Click);
@@ -108,6 +108,7 @@
             this.outputBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.outputBox.Size = new System.Drawing.Size(641, 194);
             this.outputBox.TabIndex = 5;
+            this.outputBox.WordWrap = false;
             // 
             // inputLabel
             // 
