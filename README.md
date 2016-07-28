@@ -12,11 +12,20 @@ Features
 * Logging box with total running time
 * Compare result with that of List.Sort() for correctness
 
-Challenges
+Notes
 ----------
 
 Sorting tasks are performed in a background thread to prevent freezing the UI. This app uses [BackgroundWorker](https://msdn.microsoft.com/en-us/library/system.componentmodel.backgroundworker(v=vs.110).aspx) to achieve that.
 
-However, the UI will still freeze. If the app does a background intensive operation, but returns little data, the app does not freeze as expected. However, if the background worker does little work but returns a large amount of data, like a big string, or a long list, the hang will occur only during the marshalling of the data between threads when the background worker completes, not while the worker is computing the sort.
+The app however will freeze when the input or output textbox are updated with large amount of data. To get around that, one could write a background thread to:
 
-This was unexpected and makes the app look unresponsive. I did lots of researching on this issue, but didn't find any workarounds. If you have some feedback, please contact me.
+* Break the output into chunks
+* Update the textbox with AppendText
+* Calling SuspendLayout/ResumeLayout before updating textbox
+
+Since this was also not needed for this demo app, a quick workaround is to set the textbox's WordWrap to False, this will greatly improve performance.
+
+Final thoughts
+==============
+
+Finally, I also suggest being mindful of people using keyboard shortcuts. So set UI elements's TabIndex appropriately, specially textboxes and buttons, to minimize mouse usage as much as possible. 
