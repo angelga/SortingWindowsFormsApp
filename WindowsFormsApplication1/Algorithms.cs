@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace Sorting
 {
+    /// <summary>
+    /// Implement sorting algorithms for Sorting app to use.
+    /// </summary>
     public class Algorithms
     {
+        /// <summary>
+        /// Bubble sort and save to output.
+        /// </summary>
+        /// <param name="input">String of comma separated list of integers.</param>
+        /// <param name="output"></param>
         public static void BubbleSort(string input, out string output)
         {
             List<int> result = Parse(input);
@@ -35,6 +43,11 @@ namespace Sorting
             output = string.Join(",", result);
         }
 
+        /// <summary>
+        /// Selection sort and save to output.
+        /// </summary>
+        /// <param name="input">String of comma separated list of integers.</param>
+        /// <param name="output"></param>
         public static void SelectionSort(string input, out string output)
         {
             List<int> result = Parse(input);
@@ -58,6 +71,11 @@ namespace Sorting
             output = string.Join(",", result);
         }
 
+        /// <summary>
+        /// Insertion sort and save to output.
+        /// </summary>
+        /// <param name="input">String of comma separated list of integers.</param>
+        /// <param name="output"></param>
         public static void InsertionSort(string input, out string output)
         {
             List<int> result = Parse(input);
@@ -80,11 +98,21 @@ namespace Sorting
             output = string.Join(",", result);
         }
 
+        /// <summary>
+        /// Wrapper for MergeSort, then save to output.
+        /// </summary>
+        /// <param name="input">String of comma separated list of integers.</param>
+        /// <param name="output"></param>
         public static void MergeSort(string input, out string output)
         {
             output = string.Join(",", MergeSort(Parse(input)));
         }
 
+        /// <summary>
+        /// Merge sort.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static List<int> MergeSort(List<int> input)
         {
             if (input.Count <= 1)
@@ -100,6 +128,12 @@ namespace Sorting
             return Merge(left, right);
         }
 
+        /// <summary>
+        /// Combine lists in ascending order.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns>New list with items in left and right arranged in ascending order.</returns>
         public static List<int> Merge(List<int> left, List<int> right)
         {
             var result = new List<int>();
@@ -132,6 +166,11 @@ namespace Sorting
             return result;
         }
 
+        /// <summary>
+        /// Wrapper for LomutoQuckSort and save to output.
+        /// </summary>
+        /// <param name="input">String of comma separated list of integers.</param>
+        /// <param name="output"></param>
         public static void LomutoQuickSort(string input, out string output)
         {
             var items = Parse(input);
@@ -139,6 +178,12 @@ namespace Sorting
             output = string.Join(",", items);
         }
 
+        /// <summary>
+        /// Run lomuto quick sort on input.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
         public static void LomutoQuickSort(List<int> input, int start, int end)
         {
             if (start < end)
@@ -149,6 +194,14 @@ namespace Sorting
             }
         }
 
+        /// <summary>
+        /// Partition input such that all elements smaller than pivot (last element)
+        /// are in the left and bigger elements in the right of the input
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public static int LomutoPartition(List<int> input, int start, int end)
         {
             var pivot = input[end];
@@ -176,6 +229,11 @@ namespace Sorting
             return indexPivot;
         }
 
+        /// <summary>
+        /// Wrapper for HoareQuickSort, then save to output.
+        /// </summary>
+        /// <param name="input">String of comma separated list of integers.</param>
+        /// <param name="output"></param>
         public static void HoareQuickSort(string input, out string output)
         {
             var items = Parse(input);
@@ -183,6 +241,12 @@ namespace Sorting
             output = string.Join(",", items);
         }
 
+        /// <summary>
+        /// Run HoareQuickSort on input.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
         public static void HoareQuickSort(List<int> input, int start, int end)
         {
             if (start < end)
@@ -193,6 +257,14 @@ namespace Sorting
             }
         }
 
+        /// <summary>
+        /// Partition input such that all elements smaller than pivot (first element), including the 
+        /// pivot itself, are in the left side of input. The rest are on the right side.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public static int HoarePartition(List<int> input, int start, int end)
         {
             var pivot = input[start];
@@ -224,6 +296,11 @@ namespace Sorting
             }
         }
 
+        /// <summary>
+        /// Convert string of comma separated integers to list of integers in the same order.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private static List<int> Parse(string input)
         {
             List<string> elements = input.Split(',').ToList();
