@@ -12,10 +12,11 @@ using System.Windows.Forms;
 
 namespace Sorting
 {
+    /// <summary>
+    /// Windows Forms app to run various sorting algorithms using random or custom input
+    /// </summary>
     public partial class Sorting : Form
     {
-        enum WorkerParam { name, input_list };
-        enum AppState { Idle, CreatingRandom, Sorting };
         private const int DEFAULT_COUNT = 11;
         private BackgroundWorker bw;
         private Stopwatch sw;
@@ -23,13 +24,23 @@ namespace Sorting
 
         public Sorting()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
-            bw = new BackgroundWorker();
-            bw.DoWork += new DoWorkEventHandler(bw_DoWork);
-            bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+            this.bw = new BackgroundWorker();
+            this.bw.DoWork += new DoWorkEventHandler(this.BackgroundWorkDoWork);
+            this.bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.BackgroundWorkerRunWorkerCompleted);
 
-            this.randomInputList();
+            this.RandomInputList();
+        }
+
+        enum WorkerParam
+        {
+            name, input_list
+        }
+
+        enum AppState
+        {
+            Idle, CreatingRandom, Sorting
         }
 
         private void UpdateAppState(AppState newState)
@@ -38,8 +49,8 @@ namespace Sorting
             {
                 case AppState.CreatingRandom:
                     this.randomInputButton.Enabled = false;
-                    this.inputBox.Text = "";
-                    this.outputBox.Text = "";
+                    this.inputBox.Text = string.Empty;
+                    this.outputBox.Text = string.Empty;
                     this.listBoxAlgorithms.ClearSelected();
                     this.statusTextBox.Text = "Done.";
                     break;
@@ -53,6 +64,7 @@ namespace Sorting
                     {
                         this.statusTextBox.Text = "Done.";
                     }
+
                     break;
                 case AppState.Sorting:
                     this.randomInputButton.Enabled = false;
@@ -61,91 +73,91 @@ namespace Sorting
                     this.inputBox.Enabled = false;
                     this.countInput.Enabled = false;
                     this.statusTextBox.Text = "Running.";
-                    this.outputBox.Text = "";
+                    this.outputBox.Text = string.Empty;
                     break;
             }
         }
 
-        private void randomInputList()
+        private void RandomInputList()
         {
-            UpdateAppState(AppState.CreatingRandom);
-            this.append_logging("Creating random input.");
+            this.UpdateAppState(AppState.CreatingRandom);
+            this.AppendLogging("Creating random input.");
             List<int> items = new List<int>();
             Random rand = new Random();
 
-            for (int i = 0; i < Int32.Parse(this.countInput.Text); i++)
+            for (int i = 0; i < int.Parse(this.countInput.Text); i++)
             {
-                items.Add(rand.Next(0,100));
+                items.Add(rand.Next(0, 100));
             }
 
-            this.inputBox.Text = String.Join(",", items);
-            this.append_logging("Done creating random input.");
-            UpdateAppState(AppState.Idle);
+            this.inputBox.Text = string.Join(",", items);
+            this.AppendLogging("Done creating random input.");
+            this.UpdateAppState(AppState.Idle);
         }
 
-        private void randomInputButton_Click(object sender, EventArgs e)
+        private void RandomInputButtonClick(object sender, EventArgs e)
         {
-            this.randomInputList();
-            this.outputBox.Text = "";
+            this.RandomInputList();
+            this.outputBox.Text = string.Empty;
         }
 
-        private void countInput_TextChanged(object sender, EventArgs e)
+        private void CountInputTextChanged(object sender, EventArgs e)
         {
             int count;
-            if (!Int32.TryParse(this.countInput.Text, out count))
+            if (!int.TryParse(this.countInput.Text, out count))
             {
-                this.append_logging("InputCount: Only numbers allowed.");
+                this.AppendLogging("InputCount: Only numbers allowed.");
                 this.countInput.Text = DEFAULT_COUNT.ToString();
             }
 
             if (this.countInput.Text.Length > 5)
             {
-                this.append_logging("InputCount: Only up to 99999 allowed");
+                this.AppendLogging("InputCount: Only up to 99999 allowed");
                 this.countInput.Text = DEFAULT_COUNT.ToString();
             }
         }
 
-        private void append_logging(string msg)
+        private void AppendLogging(string msg)
         {
-           this.loggingBox.Text = this.loggingBox.Text.Insert(0, 
-                    DateTime.Now.ToLongTimeString() + ": " + msg + Environment.NewLine);
+           this.loggingBox.Text = this.loggingBox.Text.Insert(
+               0, DateTime.Now.ToLongTimeString() + ": " + msg + Environment.NewLine);
         }
 
-        private void listBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.listBoxAlgorithms.SelectedItem == null)
             {
                 return;
             }
+
             if (this.bw.IsBusy)
             {
-                this.append_logging("Error: Should not be ble to select algorithm list while sorting is taking place.");
+                this.AppendLogging("Error: Should not be ble to select algorithm list while sorting is taking place.");
             }
             else
             {
-                UpdateAppState(AppState.Sorting);
+                this.UpdateAppState(AppState.Sorting);
                 var alg = this.listBoxAlgorithms.SelectedItem.ToString();
-                this.append_logging("Sorting: " + alg + " started.");
+                this.AppendLogging("Sorting: " + alg + " started.");
 
                 object[] parameters = new object[] { alg, this.inputBox.Text };
-                sw = new Stopwatch();
-                sw.Start();
+                this.sw = new Stopwatch();
+                this.sw.Start();
                 this.bw.RunWorkerAsync(parameters);
             }
         }
 
         private void Sorting_Load(object sender, EventArgs e)
         {
-
         }
 
-        private void bw_DoWork(object sender, DoWorkEventArgs e)
+        private void BackgroundWorkDoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
             object[] backgroundWorkerParameters = e.Argument as object[];
 
             string methodName = (string)backgroundWorkerParameters[(int)WorkerParam.name];
-            var inputType = new Type[] { typeof(System.String), typeof(string).MakeByRefType() };
+            var inputType = new Type[] { typeof(string), typeof(string).MakeByRefType() };
             MethodInfo method = typeof(Algorithms).GetMethod(methodName, inputType);
 
             object[] algorithmParameters = new object[] { backgroundWorkerParameters[(int)WorkerParam.input_list], null };
@@ -154,68 +166,64 @@ namespace Sorting
             e.Result = "Success.";
         }
 
-        private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled)
             {
-                this.append_logging("Sorting thread was cancelled.");
+                this.AppendLogging("Sorting thread was cancelled.");
             }
             else if (e.Error != null)
             {
-                this.append_logging("Error in sorting thread");
-                this.append_logging(e.Error.ToString());
+                this.AppendLogging("Error in sorting thread");
+                this.AppendLogging(e.Error.ToString());
             }
             else
             {
-                sw.Stop();
+                this.sw.Stop();
                 var output = (string)e.Result;
-                this.append_logging("Sorting: completed: " + output);
-                this.append_logging("Sorting: total time " + sw.Elapsed.TotalMilliseconds + " ms");
+                this.AppendLogging("Sorting: completed: " + output);
+                this.AppendLogging("Sorting: total time " + this.sw.Elapsed.TotalMilliseconds + " ms");
 
                 this.outputBox.SuspendLayout();
                 this.outputBox.Text = this.result;
                 this.outputBox.ResumeLayout();
-                this.append_logging("Done marshalling data to UI thread.");
+                this.AppendLogging("Done marshalling data to UI thread.");
             }
 
             this.UpdateAppState(AppState.Idle);
         }
 
-        private bool validate_inputBox(OptionalOut<List<int>> inputList = null)
+        private bool ValidateInputBox()
         {
             List<string> numbers = this.inputBox.Text.Split(',').ToList();
             List<int> nums = new List<int>();
             for (int i = 0; i < numbers.Count; i++)
             {
-                if (i+1 == numbers.Count && String.IsNullOrWhiteSpace(numbers[i]))
+                if (i + 1 == numbers.Count && string.IsNullOrWhiteSpace(numbers[i]))
                 {
                     continue;
                 }
+
                 int conversion;
-                var success = Int32.TryParse(numbers[i].Trim(), out conversion);
+                var success = int.TryParse(numbers[i].Trim(), out conversion);
                 if (!success)
                 {
                     return false;
                 }
+
                 nums.Add(conversion);
             }
 
-            if (inputList != null)
-            {
-                inputList.Result = nums;
-            }
             return true;
         }
 
-        private void inputBox_TextChanged(object sender, EventArgs e)
+        private void InputBoxTextChanged(object sender, EventArgs e)
         {
-            if (!this.validate_inputBox())
+            if (!this.ValidateInputBox())
             {
-                this.append_logging("Invalid input provided, reverting.");
-                this.randomInputList();
+                this.AppendLogging("Invalid input provided, reverting.");
+                this.RandomInputList();
             }
         }
     }
-
-    
 }

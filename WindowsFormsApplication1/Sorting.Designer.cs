@@ -13,10 +13,11 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (this.components != null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -56,7 +57,7 @@
             this.listBoxAlgorithms.Name = "listBoxAlgorithms";
             this.listBoxAlgorithms.Size = new System.Drawing.Size(171, 524);
             this.listBoxAlgorithms.TabIndex = 0;
-            this.listBoxAlgorithms.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
+            this.listBoxAlgorithms.SelectedIndexChanged += new System.EventHandler(this.ListBoxSelectedIndexChanged);
             // 
             // countInput
             // 
@@ -66,7 +67,7 @@
             this.countInput.TabIndex = 1;
             this.countInput.Text = "11";
             this.countInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.countInput.TextChanged += new System.EventHandler(this.countInput_TextChanged);
+            this.countInput.TextChanged += new System.EventHandler(this.CountInputTextChanged);
             // 
             // countLabel
             // 
@@ -85,7 +86,7 @@
             this.inputBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.inputBox.Size = new System.Drawing.Size(641, 194);
             this.inputBox.TabIndex = 3;
-            this.inputBox.TextChanged += new System.EventHandler(this.inputBox_TextChanged);
+            this.inputBox.TextChanged += new System.EventHandler(this.InputBoxTextChanged);
             // 
             // randomInputButton
             // 
@@ -96,7 +97,7 @@
             this.randomInputButton.TabIndex = 2;
             this.randomInputButton.Text = "Random input";
             this.randomInputButton.UseVisualStyleBackColor = true;
-            this.randomInputButton.Click += new System.EventHandler(this.randomInputButton_Click);
+            this.randomInputButton.Click += new System.EventHandler(this.RandomInputButtonClick);
             // 
             // outputBox
             // 
@@ -198,4 +199,3 @@
         private System.Windows.Forms.TextBox statusTextBox;
     }
 }
-
